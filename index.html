@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#122c53"/>
+  <meta name="description" content="독립 GitHub Pages 기반 부동산 AI 프로젝트 중앙관리 및 검증 모니터"/>
+  <title>AI Project Center Interface Main | 부동산 AI 프로젝트</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="assets/styles.css"/>
+  <script type="module" src="assets/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="logo">◈</span><div><strong>부동산 AI 프로젝트 <em>센터</em></strong><small>AI PROJECT CENTER INTERFACE MAIN</small></div></div>
+    <div class="top-actions"><span class="tag outline">독립 관리 웹앱</span><a class="top-link" target="_blank" rel="noopener" href="https://github.com/edwardlim1004/realestate_AI_anysis_20260927">원본 분석 저장소 ↗</a><span class="tag draft">운영 조회 전용</span></div>
+  </header>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="side-title">CONTROL CENTER <span>v1.0</span></div>
+      <div class="side-caption">원본 분석/배포와 독립된<br/>중앙관리 인터페이스</div>
+      <div class="side-group">프로젝트</div>
+      <nav id="nav">
+        <a href="#overview" data-view="overview"><span>▦</span>프로젝트 홈</a>
+        <a href="#flow" data-view="flow"><span>◇</span>프로젝트 flow chart</a>
+        <a href="#modules" data-view="modules"><span>▤</span>기능별 관리 (10개)</a>
+        <a href="#models" data-view="models"><span>◉</span>모형 등록부</a>
+        <a href="#data" data-view="data"><span>▥</span>데이터 카탈로그</a>
+      </nav>
+      <div class="side-group">검증 · 통제</div>
+      <nav>
+        <a href="#issues" data-view="issues"><span>⚑</span>장애·위험 현황 <b class="nav-count">2</b></a>
+        <a href="#pr37" data-view="pr37"><span>◫</span>PR #37 개선 상세</a>
+        <a href="#history" data-view="history"><span>↶</span>PR #36 / 과거 버전</a>
+        <a href="#docs" data-view="docs"><span>▣</span>이론·논문·문서</a>
+        <a href="#approval" data-view="approval"><span>✓</span>승인·의사결정</a>
+      </nav>
+      <div class="side-footer"><span class="status-dot"></span><span>원본 시스템 변경 없음</span><small>공개 GitHub 정보만 조회</small></div>
+    </aside>
+    <main id="main">
+      <div class="content-head">
+        <div><div class="eyebrow">REAL ESTATE AI / OPERATIONS CONTROL</div><h1 id="page-title">프로젝트 중앙관리 대시보드</h1><p id="page-subtitle">서울·경기·대전 분석 프로젝트의 기능, 모델 검증, 작업 증거 및 오류를 통합 조회합니다.</p></div>
+        <div class="head-actions"><div class="source-stamp"><span class="status-dot orange"></span><span id="stamp">2026-11-01 자료 스냅샷</span></div><button id="refresh" class="btn primary" type="button">⟳ 공개 상태 새로고침</button></div>
+      </div>
+      <div id="page" aria-live="polite"></div>
+      <footer class="footer">AI PROJECT CENTER · 독립 정적 웹앱 · 정보 조회용 · 모형 승인 및 투자 집행 기능 없음 <span>Source: GitHub 공개 데이터 · 2026-11-01 기준</span></footer>
+    </main>
+  </div>
+  <div id="modal" class="modal" hidden><div class="modal-backdrop" data-close="true"></div><section class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title"><header><h2 id="modal-title"></h2><button aria-label="닫기" type="button" id="modal-close">✕</button></header><div id="modal-body"></div></section></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

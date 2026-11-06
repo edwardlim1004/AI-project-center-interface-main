@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "asOf": "2026-11-01",
+  "sourceRepository": "edwardlim1004/realestate_AI_anysis_20260927",
+  "baselineCommit": "97c031906243d7124a7bb658848f9672cdf584fd",
+  "dashboardVersions": ["ver1.0", "ver0.0"],
+  "collection": {
+    "totalCompletedScopes": 35344,
+    "seoul": 11050,
+    "gyeonggi": 20774,
+    "daejeon": 2210,
+    "reportedBackendScopes": {"r2":20781,"gdrive":14563},
+    "statusAsOf": "2026-11-01",
+    "auditSeoulGyeonggi": "2026-10-28",
+    "auditDaejeon": "2026-10-28"
+  },
+  "macro": {"score":43.1,"coverage":"3/4","latestPeriod":"2026-Q2","generatedAtUTC":"2026-10-27T14:49:03+00:00"},
+  "sourcePrs": {
+    "36":{"status":"Draft","scope":"AI 운영 초안 · 8개 기능"},
+    "37":{"status":"Draft","scope":"관리 중앙화 · 10개 기능 · 병합 승인 대기"},
+    "18":{"status":"Draft","scope":"HaR 연구 브랜치 · main 미병합"}
+  },
+  "models": [
+    {"id":"macro","name":"거시·역사 위험", "status":"operating","summary":"OECD·BIS의 전국 역사 백분위 (3/4), 하락확률이 아님", "evidence":"risk-data/risk_summary.json"},
+    {"id":"liquidity","name":"초과유동성", "status":"validation","summary":"9개 게이트 중 6개 PASS, 예측 FAIL, 빈티지 부족, 미승인", "evidence":"risk-data/liquidity/validation.json"},
+    {"id":"gsadf","name":"GSADF 버블검정", "status":"research","summary":"Monte Carlo 워크플로 존재. 독립 실데이터 검증 미확인", "evidence":"gsadf/README.md"},
+    {"id":"har","name":"HaR 하방위험", "status":"research","summary":"PR #18 Draft에 연구 구현. 운영 모형 아님", "evidence":"risk-data/risk_summary.json"},
+    {"id":"valuation","name":"5년 가격평가", "status":"failure","summary":"2026-10-31 서울 25구 R2 CSV 읽기/검증 ValueError 관측", "evidence":"long-term-value/README.md"},
+    {"id":"daejeon","name":"대전 4축 연구점수", "status":"research","summary":"2026-09 기준, 대전 내 상대비교. 서울/경기와 직접 비교 금지", "evidence":"dashboard-v1/data/daejeon-regions.json"}
+  ],
+  "modules": [
+    {"id":"data","code":"01","name":"데이터 수집·품질", "status":"warning","owner":"데이터 관리자","stage":"source","description":"서울·경기·대전의 매매/전세/월세 수집 범위와 원자료 품질을 검증합니다.","paths":["seoul-apartment-collector/","api-integration/"],"details":["저장범위 감사는 원 API 거래 건별 전수 대조와 다릅니다.","2026-11-01 지역별 범위 합계와 전체 합계 사이에 1,310 차이가 있습니다."],"papers":["oecd"]},
+    {"id":"storage","code":"02","name":"저장·백업·알림", "status":"warning","owner":"스토리지 운영","stage":"source","description":"R2 및 Google Drive 원본 보관과 자동수집 상태, 복구·알림 정책을 추적합니다.","paths":["seoul-apartment-collector/",".github/workflows/"],"details":["보고된 R2 및 Drive 범위 합계는 전체 35,344와 일치하지만 지역별 합계는 불일치합니다.","원격 객체별 재검증은 이번 프로젝트센터 구현 범위에 포함되지 않습니다."],"papers":["oecd"]},
+    {"id":"macro","code":"03","name":"거시·역사적 위험", "status":"operating","owner":"거시분석 연구원","stage":"analysis","description":"OECD·BIS PIR/PTR, 신용·모멘텀의 전국 위험 백분위를 계산합니다.","paths":["risk-monitor/","risk-data/","risk-data.js"],"details":["국가단위 3/4축 역사 백분위이며 특정 서울 아파트 하락확률을 의미하지 않습니다.","데이터 관측시점과 공표·수정 시점을 분리합니다."],"papers":["oecd","bis"]},
+    {"id":"liquidity","code":"04","name":"초과유동성 검증", "status":"validation","owner":"유동성 연구원","stage":"analysis","description":"M2·GDP·실질금리 관련 연구모형을 9개 검증 게이트로 심사합니다.","paths":["risk-monitor/liquidity/","risk-data/liquidity/","liquidity-research/"],"details":["6/9개 기본 게이트 통과. 예측 성능 게이트 FAIL.","실제 공표빈티지 부족, 사용자 승격 승인 없음. 종합점수 반영 금지."],"papers":["oecd"]},
+    {"id":"gsadf","code":"05","name":"GSADF 버블검정", "status":"research","owner":"통계검정 연구원","stage":"analysis","description":"Phillips·Shi·Yu의 반복 우측꼬리 ADF 검정을 통해 과열 구간을 연구합니다.","paths":["gsadf/"],"details":["워크플로 존재가 실데이터 Monte Carlo 2,000회 성공 및 검정 타당성을 뜻하지 않습니다.","시차·표본민감도·임계값·다중검정 강건성을 검증해야 합니다."],"papers":["gsadf"]},
+    {"id":"har","code":"06","name":"HaR 하방위험", "status":"research","owner":"위험예측 연구원","stage":"analysis","description":"IMF House Prices at Risk의 분위수 회귀를 참조한 서울 아파트 하방위험 연구입니다.","paths":["risk-monitor/update_risk_data.py"],"details":["전용 HaR 구현은 Draft PR #18에 있으며 main에는 병합되지 않았습니다.","미검증 하락확률 및 수치화된 예측을 운영 화면에 게시하지 않습니다."],"papers":["har","har2020"]},
+    {"id":"valuation","code":"07","name":"5년 가격평가", "status":"failure","owner":"가격평가 연구원","stage":"evaluate","description":"동일단지·유사면적 실거래 중위값과 강건 추세·가정별 시나리오를 분리합니다.","paths":["long-term-value/","long-term-value/build_snapshots.py"],"details":["2026-10-31 Actions에서 서울 25구 데이터 읽기/검증 ValueError가 관측되었습니다.","장애 원인을 파악하기 전 성공이나 실시간 갱신으로 표시하지 않습니다."],"papers":["oecd"]},
+    {"id":"dashboard","code":"08","name":"통합 대시보드", "status":"operating","owner":"시각화 개발자","stage":"evaluate","description":"ver1.0·ver0.0, 거래상세·대전 4축 참고점수와 위험 연구 상태를 구분해 표기합니다.","paths":["index.html","dashboard-v1/","ver0/","trade-details/"],"details":["기존 지도와 데이터는 본 프로젝트센터에서 수정하지 않습니다.","원본 화면은 외부 링크로만 연결합니다."],"papers":["oecd","bis"]},
+    {"id":"auction","code":"09","name":"경·공매 옥션", "status":"prototype","owner":"경·공매 제품 개발","stage":"evaluate","description":"검색·지도·가격·권리분석 구조를 갖춘 별도 개발용 프로토타입입니다.","paths":["bossauction-lab/"],"details":["실시간 공식 경공매 원천과 실물건 DB 완전 연결은 별도 검증이 필요합니다.","권리분석 자동화를 검증된 법률의견으로 오인하지 않습니다."],"papers":[]},
+    {"id":"governance","code":"10","name":"AI 운영·의사결정", "status":"review","owner":"조정 AI · 독립 검증자 · 사용자","stage":"control","description":"작업패킷·증거 등록부·독립 검증·결재·롤백 체계를 관리합니다.","paths":["operations/","tools/ai_task.py"],"details":["PR #37은 문서/검증기 정비 Draft이며 실제 자율 AI 실행 인프라는 아닙니다.","자금집행·연구모형 승격·운영 변경은 사용자 명시 승인이 필요합니다."],"papers":["har","gsadf"]}
+  ],
+  "alerts": [
+    {"severity":"critical","date":"2026-10-31","title":"5년 가격평가 생성 실패", "detail":"서울 25개 구 R2 scope CSV read/validation ValueError", "module":"valuation", "url":"https://github.com/edwardlim1004/realestate_AI_anysis_20260927/actions/runs/41208352776"},
+    {"severity":"warning","date":"2026-11-01","title":"수집 완료 범위 집계 불일치", "detail":"전체 35,344와 지역별 합계 34,034: 1,310개 차이", "module":"data", "url":"https://github.com/edwardlim1004/realestate_AI_anysis_20260927/blob/main/seoul-apartment-collector/status.json"},
+    {"severity":"info","date":"2026-11-01","title":"PR #37 관리체계 정비", "detail":"26개 관리 파일 추가; Draft / 미병합", "module":"governance", "url":"https://github.com/edwardlim1004/realestate_AI_anysis_20260927/pull/37"},
+    {"severity":"warning","date":"2026-10-27","title":"유동성 모델 운영 승격 보류", "detail":"OOS 성능 FAIL 및 실제 발표빈티지 부족", "module":"liquidity", "url":"https://github.com/edwardlim1004/realestate_AI_anysis_20260927/blob/main/risk-data/liquidity/validation.json"}
+  ],
+  "references": [
+    {"id":"har","title":"IMF Global Financial Stability Report (2019), Chapter 2 — Downside Risks to House Prices", "type":"이론 · 하방위험", "url":"https://www.imf.org/-/media/files/publications/gfsr/2019/april/english/ch2.pdf", "note":"House Prices at Risk: 과대평가·신용확대·금융여건·모멘텀과 미래 하방위험의 관계. 국내 모형 검증 완료를 의미하지 않음."},
+    {"id":"har2020","title":"Adrian et al. (2020), Predicting Downside Risks to House Prices and Macro-Financial Stability, IMF WP/20/11", "type":"논문 · 분위수예측", "url":"https://www.imf.org/en/-/media/files/publications/wp/2020/english/wpiea2020011-print-pdf.pdf", "note":"분위수회귀 기반 하방위험 추정과 거시금융안정성의 관계."},
+    {"id":"gsadf","title":"Phillips, Shi & Yu (2015), Testing for Multiple Bubbles, International Economic Review", "type":"논문 · GSADF", "url":"https://doi.org/10.1111/iere.12132", "note":"복수 버블 탐지를 위한 재귀적 유연창 ADF 방법론. 금융가격 실증 논문이므로 아파트에 대한 독립 검증 필요."},
+    {"id":"oecd","title":"OECD — Housing prices and Analytical House Price Indicators", "type":"공식 데이터 · PIR/PTR", "url":"https://www.oecd.org/en/data/indicators/housing-prices.html", "note":"명목·실질주택가격과 소득/임대료 대비 가격지표의 정의와 통계 출처."},
+    {"id":"bis","title":"BIS Data Portal — Residential property prices", "type":"공식 데이터 · 국제비교", "url":"https://data.bis.org/topics/RPP", "note":"국가별 대표 주택가격 계열 및 국가 간 비교 시 적용범위 주의."}
+  ]
+}
