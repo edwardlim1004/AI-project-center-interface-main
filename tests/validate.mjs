@@ -19,12 +19,19 @@ test('all ten modules have codes, distinct IDs and allowed path string',()=>{
  assert.equal(new Set(data.modules.map(m=>m.id)).size,10);
  for(const m of data.modules){assert.ok(m.paths.length>=1);assert.ok(m.owner);assert.ok(m.description);for(const p of m.paths)assert.doesNotMatch(p,/^\/|\.\./);}
 });
-test('research restrictions and failure indicators',()=>{
- assert.equal(data.modules.find(m=>m.id==='valuation').status,'failure');
+test('research restrictions and valuation build recovery evidence',()=>{
+ assert.equal(data.modules.find(m=>m.id==='valuation').status,'recovered');
  assert.equal(data.modules.find(m=>m.id==='liquidity').status,'validation');
  assert.equal(data.modules.find(m=>m.id==='gsadf').status,'research');
  assert.equal(data.modules.find(m=>m.id==='har').status,'research');
- assert.equal(data.models.find(m=>m.id==='valuation').status,'failure');
+ assert.equal(data.models.find(m=>m.id==='valuation').status,'recovered');
+ assert.equal(data.valuationBuild.districtsUpdated,25);
+ assert.equal(data.valuationBuild.districtsFailed,0);
+ assert.equal(data.valuationBuild.cutoffMonth,'202609');
+ assert.equal(data.valuationBuild.verifiedDistrictExample.saleMonths,60);
+ assert.match(data.valuationBuild.runUrl,/actions\/runs\/42330824426/);
+ assert.ok(!data.alerts.some(x=>x.module==='valuation' && x.severity==='critical'));
+ assert.match(app,/recovered:\['빌드 정상'/);
 });
 test('scope counts are transparent and not silently normalized',()=>{
  const c=data.collection;

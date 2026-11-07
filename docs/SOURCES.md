@@ -18,7 +18,9 @@
 - HaR 연구용 Draft PR #18: https://github.com/edwardlim1004/realestate_AI_anysis_20260927/pull/18
 - 현재 논리 범위 상태: https://github.com/edwardlim1004/realestate_AI_anysis_20260927/blob/main/seoul-apartment-collector/status.json
 - 원본 모델 검증: https://github.com/edwardlim1004/realestate_AI_anysis_20260927/blob/main/risk-data/liquidity/validation.json
-- 5년 가격평가 실패 Actions: https://github.com/edwardlim1004/realestate_AI_anysis_20260927/actions/runs/41208352776
+- 5년 가격평가 **최신 성공** Actions (2026-11-07, 서울 25개 구, 기준월 2026-09): https://github.com/edwardlim1004/realestate_AI_anysis_20260927/actions/runs/42330824426
+- 가격평가 성공본 원천 공개 집계: https://github.com/edwardlim1004/realestate_AI_anysis_20260927/blob/main/long-term-value/data/11710.json
+- 2026-10-31 과거 실패 Actions(해결 전 기록): https://github.com/edwardlim1004/realestate_AI_anysis_20260927/actions/runs/41208352776
 - PR #37 원본 중앙관리 README: https://github.com/edwardlim1004/realestate_AI_anysis_20260927/blob/ops/governance-main-sync-20261101/operations/README.md
 
 ## 적용상의 유의사항
