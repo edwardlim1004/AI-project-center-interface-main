@@ -3,53 +3,60 @@
   "review_id": "RV-DEMO-0142",
   "status": "NEEDS_HUMAN_DECISION",
   "as_of": "2026-11-13",
-  "change_target": "서울 아파트 전월세 데이터 품질 검토 흐름 예시",
+  "change_target": "서울 아파트 전월세 데이터 최신월·누락 구분 검토 흐름 예시",
   "packet_hash": "SHA-256 DEMO-9F2A-71C4",
   "diff_hash": "DIFF-DEMO-2C81-4D10",
-  "prompt_version": "review-packet-v0.1-demo",
+  "prompt_version": "review-packet-v0.2-demo",
   "steps": [
-    {"id":"packet","label":"증거 패킷 고정","state":"done"},
-    {"id":"independent","label":"독립 1차 검토","state":"done"},
+    {"id":"packet","label":"자료 고정","state":"done"},
+    {"id":"independent","label":"AI별 독립 검토","state":"done"},
     {"id":"cross","label":"익명 교차검토","state":"done"},
-    {"id":"python","label":"Python 검증","state":"current"},
-    {"id":"approval","label":"Edward 승인","state":"locked"}
+    {"id":"python","label":"자동 재현 확인","state":"current"},
+    {"id":"approval","label":"Edward 최종 판단","state":"locked"}
   ],
   "summary": [
-    {"label":"검토된 주장","value":"3","help":"동일 증거 패킷 기준","tone":"good"},
-    {"label":"재현 확인","value":"2","help":"허용된 검증 함수 결과","tone":"good"},
-    {"label":"미해결 쟁점","value":"1","help":"승인 전 확인 필요","tone":"warn"},
-    {"label":"차단 오류","value":"0","help":"현재 데모 규칙 평가","tone":"good"}
+    {"label":"검토 주장","value":"3","help":"같은 증거 패킷으로 비교","tone":"good"},
+    {"label":"재현 확인","value":"2","help":"허용된 Python 검사 결과","tone":"good"},
+    {"label":"남은 쟁점","value":"1","help":"원자료 로그가 없어 확정 불가","tone":"warn"},
+    {"label":"승인 가능","value":"아니오","help":"근거 보완 전에는 승인 단계로 이동 안 함","tone":"bad"}
   ],
   "models": [
-    {"id":"chatgpt","name":"ChatGPT","first_verdict":"대체로 타당","verdict_type":"ok","evidence_count":3,"counterexample_count":0,"unverified_count":1,"status":"근거와 조건을 구조화함"},
-    {"id":"claude","name":"Claude","first_verdict":"일부 보완 필요","verdict_type":"conditional","evidence_count":3,"counterexample_count":1,"unverified_count":1,"status":"반례 검토를 제시함"},
-    {"id":"gemini","name":"Gemini","first_verdict":"타당","verdict_type":"ok","evidence_count":3,"counterexample_count":0,"unverified_count":1,"status":"독립 재검토를 제출함"}
+    {"id":"chatgpt","name":"ChatGPT","first_verdict":"대체로 타당","verdict_type":"ok","submitted_at":"10:03","submission":"SUB-DEMO-GP-01","evidence_count":3,"counterexample_count":0,"unverified_count":1,"summary":"최신 반영월 확인과 지역·유형별 결측 분리를 제안","rationale":"표시된 마지막 월이 수집 기준일과 다를 수 있어 스냅샷 기준일과 공개 상태 파일을 함께 대조해야 한다고 판단","status":"동일 패킷으로 독립 제출"},
+    {"id":"claude","name":"Claude","first_verdict":"일부 보완 필요","verdict_type":"conditional","submitted_at":"10:04","submission":"SUB-DEMO-CL-01","evidence_count":3,"counterexample_count":1,"unverified_count":1,"summary":"최신월 대조에는 동의하나, 공개 화면만으로 누락 원인을 단정할 수 없다고 반례 제시","rationale":"수집 로그와 원자료 메타데이터가 없으면 미수집·거래 없음·화면 필터링을 구별하지 못한다","status":"미확인 원인에 대한 반례 제출"},
+    {"id":"gemini","name":"Gemini","first_verdict":"타당","verdict_type":"ok","submitted_at":"10:05","submission":"SUB-DEMO-GM-01","evidence_count":3,"counterexample_count":0,"unverified_count":1,"summary":"데이터 기준일, 지역·거래 유형 범위, 대체 표시월을 명시하자고 제안","rationale":"화면의 최신값을 실제 최신 거래월로 오해할 수 있으므로 기준월과 표시월을 나란히 기록해야 한다고 판단","status":"기준일과 화면 표시 범위 구분"}
   ],
   "cross_review": [
-    {"id":"A","finding":"기준월 비교 검증이 필요","verdict":"보완 필요"},
-    {"id":"B","finding":"자료 범위와 표시 범위를 구분해야 함","verdict":"동의"},
-    {"id":"C","finding":"원자료 메타데이터 확인 전 단정 금지","verdict":"확인 필요"}
+    {"reviewer":"A","target":"B","claim_id":"C2","verdict":"보완 필요","reason":"지역별 월별 레코드 범위만으로는 계약 유형이 빠진 경우를 놓칠 수 있다","evidence":"지역 × 계약 유형 × 기준월 조합별 레코드 수 비교를 요청","outcome":"비교 항목에 계약 유형을 포함하도록 보완"},
+    {"reviewer":"B","target":"C","claim_id":"C1","verdict":"동의","reason":"기준월과 화면 표시월을 별도로 비교해야 한다는 주장에 동의","evidence":"스냅샷 기준일과 공개 status 파일의 최신 반영월 대조","outcome":"Python 재현 검사 1건으로 연결"},
+    {"reviewer":"C","target":"A","claim_id":"C3","verdict":"반대","reason":"화면에 보이는 자료만으로 원자료 누락의 원인을 특정할 수 없다","evidence":"원자료 수집 로그와 응답 메타데이터가 증거 패킷에 없음","outcome":"주장 미검증으로 남김; 승인 불가 사유"}
   ],
   "claims": [
-    {"id":"C1","claim":"최신 반영월과 화면 표시월이 같은지 확인해야 한다","source":"스냅샷 기준일 + 공개 status.json","chatgpt":"동의","claude":"동의","gemini":"동의","python":"재현 확인","result":"pass"},
-    {"id":"C2","claim":"지역별 거래 유형의 결측과 수집 실패를 구분해야 한다","source":"지역·유형별 월별 레코드 범위","chatgpt":"동의","claude":"반례 제시","gemini":"동의","python":"재현 확인","result":"pass"},
-    {"id":"C3","claim":"표시 데이터만으로 원자료 누락 원인을 확정할 수 있다","source":"원자료 수집 로그 필요","chatgpt":"유보","claude":"반대","gemini":"유보","python":"검증 불가","result":"warn"}
+    {"id":"C1","claim":"최신 반영월과 화면 표시월이 같은지 확인해야 한다","source":"스냅샷 기준일 + 공개 status.json","chatgpt":"동의","claude":"동의","gemini":"동의","python":"재현 확인","result":"pass","explanation":"최신 반영월과 화면 표시월은 별도 필드로 비교해야 함","validation":"허용 검사 V-01: status.json의 latest_month와 화면 데이터의 max(month) 비교","expected":"두 월이 같거나, 차이가 있을 때 화면에 대체 표시월 안내가 있음","actual":"시연 fixture에서 최신월 필드와 표시월 필드를 대조","python_reason":"검사 규칙과 예시값 일치","position_reasons":{"chatgpt":"기준일과 마지막 표시월 대조를 제안","claude":"같은 기준월을 비교해야 함","gemini":"기준월·표시월 분리를 권고"}},
+    {"id":"C2","claim":"지역별 거래 유형의 결측과 수집 실패를 구분해야 한다","source":"지역·계약 유형별 월별 레코드 범위","chatgpt":"동의","claude":"반례 제시","gemini":"동의","python":"재현 확인","result":"pass","explanation":"빈 월만으로 거래 없음과 수집 실패를 구분할 수 없음","validation":"허용 검사 V-02: 지역 × 계약 유형 × 월의 레코드·수집상태 조합 확인","expected":"자료 없음과 수집 오류 상태가 서로 다른 코드로 기록됨","actual":"시연 fixture의 상태 코드 구분을 확인","python_reason":"수집 상태가 별도 필드로 존재하는 경우에만 구분 가능","position_reasons":{"chatgpt":"수집상태와 거래 건수를 함께 보자고 제안","claude":"계약 유형 단위 검사 누락 가능성을 반례로 지적","gemini":"지역과 유형 범위를 같은 단위로 맞춰야 함"}},
+    {"id":"C3","claim":"표시 데이터만으로 원자료 누락 원인을 확정할 수 있다","source":"필요 자료: 원자료 수집 로그·응답 메타데이터","chatgpt":"유보","claude":"반대","gemini":"유보","python":"검증 불가","result":"warn","explanation":"화면 데이터만으로 미수집, 거래 없음, 필터링 중 어느 원인인지 판별할 수 없음","validation":"원자료 수집 로그 및 응답 메타데이터 확인 필요; 현재 허용 검사 대상에 자료 없음","expected":"원인 판정을 뒷받침하는 원자료 로그 확보","actual":"증거 패킷에 수집 로그가 포함되지 않음","python_reason":"입력 증거가 없어 재현 또는 원인 확정 불가","open_issue":"수집 로그와 원자료 응답 메타데이터 확보 후 C3를 다시 검토해야 함","position_reasons":{"chatgpt":"근거가 부족해 결론 유보","claude":"화면 자료만으로 원인 확정은 불가능하다고 반박","gemini":"수집 로그 확인 전 원인 단정 금지"}}
   ],
   "gates": [
-    {"label":"입력 패킷 해시 일치","state":"pass","value":"3개 모델 동일"},
-    {"label":"응답 JSON 스키마","state":"pass","value":"유효"},
-    {"label":"허용 검증 함수","state":"pass","value":"2개 재현"},
-    {"label":"임계 미해결 쟁점","state":"pass","value":"0건"},
-    {"label":"미검증 핵심 주장","state":"warn","value":"1건"},
-    {"label":"회귀 기준 세트","state":"pass","value":"데모 통과"}
+    {"label":"세 모델 입력 해시","state":"pass","value":"모두 동일","reason":"동일 패킷 지문을 사용한 시연 예시"},
+    {"label":"응답 형식 검사","state":"pass","value":"유효","reason":"필수 필드가 있는 예시 JSON"},
+    {"label":"허용된 재현 검사","state":"pass","value":"2 / 2","reason":"V-01, V-02 예시 fixture로 확인"},
+    {"label":"미해결 주장","state":"warn","value":"C3 · 1건","reason":"원자료 로그가 없어 핵심 원인을 확인하지 못함"},
+    {"label":"회귀 기준 세트","state":"pass","value":"예시 통과","reason":"실제 백테스트 결과가 아닌 시연값"},
+    {"label":"최종 승인","state":"fail","value":"잠김","reason":"미검증 주장 보완 전에는 승인할 수 없음"}
   ],
-  "decision": {"state":"NEEDS_HUMAN_DECISION","label":"미검증 쟁점 1건 — Edward님 판단 대기","reason":"원자료 로그가 없는 주장은 승인 근거로 사용하지 않습니다."},
+  "decision": {"state":"NEEDS_HUMAN_DECISION","label":"보류 — C3 근거 보완이 필요합니다","reason":"현재 증거로는 원자료 누락 원인을 확정할 수 없습니다. 수집 로그와 원자료 응답 메타데이터를 추가한 새 패킷으로 재검토해야 합니다."},
   "mapping": [
     {"label":"A","model":"Claude","submission":"SUB-DEMO-CL-01"},
     {"label":"B","model":"Gemini","submission":"SUB-DEMO-GM-01"},
     {"label":"C","model":"ChatGPT","submission":"SUB-DEMO-GP-01"}
   ],
-  "kakao": {"title":"부동산 AI 변경 검토 요청 · 시연","verified_claims":2,"unresolved_issues":1,"blocked_issues":0,"approval_url":"중앙관리 검토 화면 링크 예시"},
-  "packet_contents": ["변경안 diff와 기준 버전", "데이터 스냅샷 ID와 기준일", "지역·기간·지표 정의", "합격 기준과 검증 함수 버전", "프롬프트·출력 스키마 버전"],
-  "audit_events": ["패킷 지문 생성", "세 모델 독립 제출 수신", "검토 라벨 무작위 배정", "검증 결과와 모델 귀속 기록"]
+  "kakao": {"title":"부동산 AI 검토 결과 · 시연","verified_claims":2,"unresolved_issues":1,"blocked_issues":1,"next_action":"수집 로그를 추가해 재검토","approval_url":"중앙관리 검토 화면 예시"},
+  "packet_contents": ["변경안 diff와 기준 버전", "데이터 스냅샷 ID와 기준일", "지역·기간·거래 유형 정의", "합격 기준과 허용 검증 함수 버전", "프롬프트·응답 스키마 버전"],
+  "audit_events": [
+    {"at":"2026-11-13 09:58","phase":"자료 준비","actor":"오케스트레이터","action":"검토 패킷 고정","what":"요청, 변경안, 데이터 스냅샷, 합격 기준을 묶음","how":"정규화한 패킷에 시연 지문과 프롬프트 버전을 부여","why":"세 모델이 같은 자료를 검토했는지 확인하기 위해","outcome":"패킷 DEMO-9F2A-71C4 생성"},
+    {"at":"2026-11-13 10:03","phase":"독립 검토","actor":"ChatGPT","action":"1차 독립 의견 제출","what":"최신월 대조와 결측 구분 주장 검토","how":"다른 모델의 의견 없이 구조화된 응답 제출","why":"초기 판단의 상호 영향 방지","outcome":"근거 3건, 미확인 1건 기록"},
+    {"at":"2026-11-13 10:04","phase":"독립 검토","actor":"Claude","action":"1차 독립 의견 제출","what":"수집 실패 원인을 화면 데이터로 확정할 수 있는지 검토","how":"반례와 원자료 로그 필요성을 제출","why":"자료가 지지하지 않는 인과 단정을 막기 위해","outcome":"C3에 반례 표시"},
+    {"at":"2026-11-13 10:05","phase":"독립 검토","actor":"Gemini","action":"1차 독립 의견 제출","what":"기준월과 표시월, 거래 유형 범위 검토","how":"동일 패킷에서 독립 구조화 응답 제출","why":"비교 단위가 달라 생기는 누락을 확인하기 위해","outcome":"기준월과 거래 유형 분리 기록 제안"},
+    {"at":"2026-11-13 10:08","phase":"익명 교차검토","actor":"오케스트레이터","action":"검토 의견 익명 배정","what":"다른 모델의 주장만 검토자 A/B/C로 전달","how":"제출자 본인 의견을 제외하고 라벨을 무작위 배정","why":"브랜드 명성에 따른 동조·반박 편향을 줄이기 위해","outcome":"익명 라벨과 실제 모델 매핑을 감사 기록에 보존"},
+    {"at":"2026-11-13 10:12","phase":"자동 검증","actor":"Python 판정기","action":"허용 검사와 승인 규칙 실행","what":"V-01, V-02 재현 및 미검증 주장 확인","how":"고정 fixture와 사전 등록 검사만 실행","why":"모델 의견을 실제 근거 검증과 분리하기 위해","outcome":"2건 재현; C3 미검증; 최종 승인 잠금"}
+  ]
 }
