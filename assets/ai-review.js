@@ -30,7 +30,16 @@ function renderModels() {
 }
 
 function renderClaims() {
-  $('#claims-body').innerHTML = review.claims.map(item => `<tr><td class="claim-name">${escapeHtml(item.claim)}</td><td class="source-ref">${escapeHtml(item.source)}</td><td>${chip(item.chatgpt, item.chatgpt === '유보' ? 'warn' : 'pass')}</td><td>${chip(item.claude, item.claude === '반대' || item.claude === '반례 제시' ? 'warn' : 'pass')}</td><td>${chip(item.gemini, item.gemini === '유보' ? 'warn' : 'pass')}</td><td>${chip(item.python, item.result)}</td></tr>`).join('');
+  const labelMap = Object.fromEntries(review.mapping.map(entry => [entry.model, entry.label]));
+  const order = activeTab === 'cross'
+    ? Object.entries(labelMap).map(([model, label]) => ({model, label})).sort((a, b) => a.label.localeCompare(b.label))
+    : [{model: 'ChatGPT', label: 'ChatGPT'}, {model: 'Claude', label: 'Claude'}, {model: 'Gemini', label: 'Gemini'}];
+  document.querySelector('.evidence-panel thead').innerHTML = `<tr><th>주장</th><th>근거 출처</th>${order.map(entry => `<th>${escapeHtml(entry.label)}</th>`).join('')}<th>Python 재현</th></tr>`;
+  $('#claims-body').innerHTML = review.claims.map(item => `<tr><td class="claim-name">${escapeHtml(item.claim)}</td><td class="source-ref">${escapeHtml(item.source)}</td>${order.map(entry => {
+    const value = item[entry.model.toLowerCase()] || '확인 필요';
+    const state = value === '유보' || value === '반대' || value === '반례 제시' ? 'warn' : 'pass';
+    return `<td>${chip(value, state)}</td>`;
+  }).join('')}<td>${chip(item.python, item.result)}</td></tr>`).join('');
 }
 
 function renderGates() {
