@@ -17,10 +17,10 @@
   <div class="shell">
     <aside class="sidebar">
       <div class="side-heading">검증 컨트롤</div>
-      <a class="side-link active" href="#overview">▦ 검토 현황</a>
-      <a class="side-link" href="#evidence">▤ 주장·근거 대조</a>
-      <a class="side-link" href="#decision">⚖ Python 판정</a>
-      <a class="side-link" href="#audit">↶ 익명 매핑·감사 로그</a>
+      <a class="side-link active" href="#view-risk" data-view="risk">▦ 위험지도</a>
+      <a class="side-link" href="#view-compare" data-view="compare">▤ AI 의견 비교</a>
+      <a class="side-link" href="#view-conclusion" data-view="conclusion">⚖ 결론 먼저</a>
+      <a class="side-link" href="#view-timeline" data-view="timeline">↶ 시간순 기록</a>
       <div class="side-note"><b>권한 경계</b><br/>AI는 의견만 제출합니다.<br/>검증은 코드가, 승인은 Edward님이 합니다.</div>
       <div class="sidebar-bottom"><span class="status-dot"></span> 공개 데모 모드</div>
     </aside>
@@ -36,32 +36,49 @@
         <div><span class="label">변경 대상</span><b id="change-target">—</b></div>
         <button class="button secondary" id="packet-button" type="button">패킷 구성 보기</button>
       </section>
-      <section class="decision-summary panel" id="decision-summary" aria-live="polite"></section>
-      <section class="panel event-panel" id="activity">
-        <div class="panel-title"><div><h2>검토 진행 기록</h2><p>각 단계에서 누가, 언제, 무엇을, 어떤 방법으로, 왜 했는지 확인합니다.</p></div><span class="small-tag">시각순 기록</span></div>
-        <div id="event-timeline" class="event-timeline"></div>
+      <nav class="view-tabs panel" aria-label="검토 화면 선택" role="tablist">
+        <button class="view-tab active" role="tab" aria-selected="true" data-view="risk"><span>01</span><b>위험지도</b><small>먼저 볼 문제</small></button>
+        <button class="view-tab" role="tab" aria-selected="false" data-view="compare"><span>02</span><b>AI 의견 비교</b><small>어디서 갈렸나</small></button>
+        <button class="view-tab" role="tab" aria-selected="false" data-view="conclusion"><span>03</span><b>결론 먼저</b><small>무엇을 결정하나</small></button>
+        <button class="view-tab" role="tab" aria-selected="false" data-view="timeline"><span>04</span><b>시간순 기록</b><small>누가·언제·왜</small></button>
+      </nav>
+      <section class="view-pane active" id="view-risk" role="tabpanel">
+        <div class="view-heading"><div><span class="eyebrow">01 / RISK MAP</span><h2>어떤 문제가 먼저 해결되어야 하나요?</h2><p>위쪽에 있을수록 영향이 크고, 오른쪽에 있을수록 아직 근거가 부족합니다.</p></div><span class="small-tag">우선순위 시각화</span></div>
+        <div id="risk-map" class="risk-layout"></div>
       </section>
-      <section class="steps" aria-label="검토 진행 단계" id="steps"></section>
-      <section class="summary-grid" id="summary-cards"></section>
-      <section class="review-switch panel">
-        <div><h2>AI 검토 결과</h2><p>독립 검토에서는 실명별 결과를 기록하고, 교차 검토에는 모델명을 숨긴 주장만 전달합니다.</p></div>
-        <div class="tab-list" role="tablist" aria-label="검토 단계">
-          <button class="tab active" role="tab" aria-selected="true" data-tab="independent">독립 1차 검토</button>
-          <button class="tab" role="tab" aria-selected="false" data-tab="cross">익명 교차검토</button>
-        </div>
+      <section class="view-pane" id="view-compare" role="tabpanel" hidden>
+        <div class="view-heading"><div><span class="eyebrow">02 / AI COMPARISON</span><h2>세 AI가 같은 점과 다른 점</h2><p>먼저 각 AI의 독립 의견을 보고, 익명 교차검토에서 누가 누구의 어떤 주장을 확인했는지 살펴봅니다.</p></div></div>
+        <section class="review-switch panel">
+          <div><h3>검토 방식</h3><p>교차검토에서는 모델 이름 대신 무작위 라벨을 사용합니다.</p></div>
+          <div class="tab-list" role="tablist" aria-label="AI 검토 단계">
+            <button class="tab active" role="tab" aria-selected="true" data-tab="independent">독립 검토</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="cross">익명 교차검토</button>
+          </div>
+        </section>
+        <section class="model-grid" id="model-grid"></section>
+        <div class="panel compare-claims"><div class="panel-title"><div><h3>주장별 의견 차이</h3><p>표의 주장을 누르면 아래 근거 상세에서 이유와 검증 결과를 확인할 수 있습니다.</p></div></div><div id="compare-claims"></div></div>
       </section>
-      <section class="model-grid" id="model-grid"></section>
+      <section class="view-pane" id="view-conclusion" role="tabpanel" hidden>
+        <div class="view-heading"><div><span class="eyebrow">03 / DECISION</span><h2>현재 결론과 필요한 다음 행동</h2><p>미해결 근거가 있으면 다수 의견이어도 승인을 잠급니다.</p></div></div>
+        <section class="decision-summary panel" id="decision-summary" aria-live="polite"></section>
+        <section class="steps" aria-label="검토 진행 단계" id="steps"></section>
+        <section class="summary-grid" id="summary-cards"></section>
+        <aside class="panel gate-panel conclusion-gate" id="decision">
+          <div class="panel-title"><div><h3>자동 판정 근거</h3><p>각 규칙이 통과·보류·차단된 이유를 함께 표시합니다.</p></div><span class="gate-icon">⌘</span></div>
+          <div id="gates"></div><div class="decision-callout" id="decision-callout"></div>
+        </aside>
+      </section>
+      <section class="view-pane" id="view-timeline" role="tabpanel" hidden>
+        <div class="view-heading"><div><span class="eyebrow">04 / AUDIT TRAIL</span><h2>검토가 진행된 순서</h2><p>각 기록에 담당자, 시각, 실행 방법, 이유와 결과를 표시합니다.</p></div><span class="small-tag">시각순 기록</span></div>
+        <section class="panel event-panel" id="activity"><div id="event-timeline" class="event-timeline"></div></section>
+      </section>
       <section class="content-grid" id="evidence">
         <div class="panel evidence-panel">
           <div class="panel-title"><div><h2>주장별 검토 근거</h2><p>주장을 열면 세 AI의 의견, 근거 자료, 검증 방법과 남은 쟁점을 함께 봅니다.</p></div><span class="small-tag">주장 원장</span></div>
           <div id="claim-cards" class="claim-cards"></div>
           <p class="table-foot">검증 상태는 시연 예시입니다. 실제 운영에서는 허용된 검증 함수와 고정 데이터 스냅샷의 결과만 표시합니다.</p>
         </div>
-        <aside class="panel gate-panel" id="decision">
-          <div class="panel-title"><div><h2>Python 판정 게이트</h2><p>AI 표결과 분리된 규칙 기반 판정</p></div><span class="gate-icon">⌘</span></div>
-          <div id="gates"></div>
-          <div class="decision-callout" id="decision-callout"></div>
-        </aside>
+        <aside class="panel guide-panel"><div class="panel-title"><div><h2>이 상세 내용 읽는 법</h2><p>이 화면은 결론을 대신 내리지 않습니다.</p></div></div><ol><li>주장을 열어 AI별 판단을 봅니다.</li><li>출처와 검증 결과가 주장을 뒷받침하는지 확인합니다.</li><li>미해결 근거가 있으면 승인하지 않고 보완합니다.</li></ol></aside>
       </section>
       <section class="panel approval-panel">
         <div class="approval-copy"><div class="eyebrow">HUMAN APPROVAL GATE</div><h2>Edward님 해시별 최종 승인</h2><p>승인은 패킷 해시와 변경 diff 해시에 묶입니다. 대상 코드나 데이터가 바뀌면 승인도 무효가 됩니다.</p><div class="hash-pair"><span>패킷 <code id="approval-packet-hash">—</code></span><span>변경 diff <code id="diff-hash">—</code></span></div></div>
