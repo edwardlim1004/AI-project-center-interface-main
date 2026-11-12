@@ -74,6 +74,7 @@ function wireActions() {
       tab.setAttribute('aria-selected', String(active));
     });
     renderModels();
+    renderClaims();
   }));
   $('#packet-button').addEventListener('click', () => openDialog('증거 패킷 구성', `<p>모든 모델에 같은 기준을 전달하려면 패킷 내용을 고정하고 SHA-256 지문을 기록합니다.</p><ul>${review.packet_contents.map(x => `<li>${escapeHtml(x)}</li>`).join('')}</ul><p><b>현재 해시:</b> <code>${escapeHtml(review.packet_hash)}</code></p>`));
   $('#mapping-toggle').addEventListener('click', event => {
