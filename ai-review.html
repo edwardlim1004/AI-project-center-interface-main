@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#122c53"/>
+  <meta name="description" content="부동산 AI 프로젝트의 3개 모델 독립 검토 및 승인 게이트 시연 화면"/>
+  <title>3AI 검토·승인 센터 | 부동산 AI 프로젝트</title>
+  <link rel="stylesheet" href="assets/ai-review.css"/>
+  <script defer src="assets/ai-review.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark">◈</span><span><strong>부동산 AI 프로젝트</strong><small>3AI 검토 · 승인 센터</small></span></a>
+    <div class="topbar-right"><span class="demo-tag">시연 데이터 · 실제 AI/API 미연결</span><a class="back-link" href="index.html">← 중앙관리로</a></div>
+  </header>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="side-heading">검증 컨트롤</div>
+      <a class="side-link active" href="#overview">▦ 검토 현황</a>
+      <a class="side-link" href="#evidence">▤ 주장·근거 대조</a>
+      <a class="side-link" href="#decision">⚖ Python 판정</a>
+      <a class="side-link" href="#audit">↶ 익명 매핑·감사 로그</a>
+      <div class="side-note"><b>권한 경계</b><br/>AI는 의견만 제출합니다.<br/>검증은 코드가, 승인은 Edward님이 합니다.</div>
+      <div class="sidebar-bottom"><span class="status-dot"></span> 공개 데모 모드</div>
+    </aside>
+    <main id="overview">
+      <section class="page-head">
+        <div><div class="eyebrow">REAL ESTATE AI / REVIEW WORKFLOW</div><h1>3개 AI 독립 검토 · 승인 센터</h1><p>같은 증거 패킷을 독립 검토하고, 근거 재현과 판정 규칙을 통과한 변경만 사람 승인으로 보냅니다.</p></div>
+        <div class="review-id"><span>검토 ID</span><b id="review-id">불러오는 중</b><span class="state-badge hold" id="review-status">시연 로드 중</span></div>
+      </section>
+      <div class="demo-banner"><b>시연용 화면</b><span>표시된 검토 건·수치·모델 응답은 흐름 설명용 예시입니다. 실제 데이터 검증이나 AI 호출 결과가 아닙니다.</span></div>
+      <section class="packet-bar" aria-label="증거 패킷 정보">
+        <div><span class="label">증거 패킷 SHA-256</span><code id="packet-hash">—</code></div>
+        <div><span class="label">데이터 기준일</span><b id="as-of">—</b></div>
+        <div><span class="label">변경 대상</span><b id="change-target">—</b></div>
+        <button class="button secondary" id="packet-button" type="button">패킷 구성 보기</button>
+      </section>
+      <section class="steps" aria-label="검토 진행 단계" id="steps"></section>
+      <section class="summary-grid" id="summary-cards"></section>
+      <section class="review-switch panel">
+        <div><h2>AI 검토 결과</h2><p>독립 검토에서는 실명별 결과를 기록하고, 교차 검토에는 모델명을 숨긴 주장만 전달합니다.</p></div>
+        <div class="tab-list" role="tablist" aria-label="검토 단계">
+          <button class="tab active" role="tab" aria-selected="true" data-tab="independent">독립 1차 검토</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="cross">익명 교차검토</button>
+        </div>
+      </section>
+      <section class="model-grid" id="model-grid"></section>
+      <section class="content-grid" id="evidence">
+        <div class="panel evidence-panel">
+          <div class="panel-title"><div><h2>주장별 근거 대조</h2><p>AI 응답을 주장 단위로 분리해 출처와 재현 결과를 비교합니다.</p></div><span class="small-tag">근거 원장</span></div>
+          <div class="table-scroll"><table><thead><tr><th>주장</th><th>근거 출처</th><th>ChatGPT</th><th>Claude</th><th>Gemini</th><th>Python 재현</th></tr></thead><tbody id="claims-body"></tbody></table></div>
+          <p class="table-foot">“재현”은 사전 허용된 검증 함수의 결과를 뜻합니다. AI가 반환한 임의 코드나 쿼리는 실행하지 않습니다.</p>
+        </div>
+        <aside class="panel gate-panel" id="decision">
+          <div class="panel-title"><div><h2>Python 판정 게이트</h2><p>AI 표결과 분리된 규칙 기반 판정</p></div><span class="gate-icon">⌘</span></div>
+          <div id="gates"></div>
+          <div class="decision-callout" id="decision-callout"></div>
+        </aside>
+      </section>
+      <section class="panel approval-panel">
+        <div class="approval-copy"><div class="eyebrow">HUMAN APPROVAL GATE</div><h2>Edward님 해시별 최종 승인</h2><p>승인은 패킷 해시와 변경 diff 해시에 묶입니다. 대상 코드나 데이터가 바뀌면 승인도 무효가 됩니다.</p><div class="hash-pair"><span>패킷 <code id="approval-packet-hash">—</code></span><span>변경 diff <code id="diff-hash">—</code></span></div></div>
+        <div class="approval-actions"><span class="approval-lock" id="approval-lock">🔒 인증 서버 미연결 — 승인 잠김</span><div><button class="button secondary" id="hold-button" type="button">보류·재검토</button><button class="button approve" id="approve-button" type="button" disabled>승인하기</button></div><small>현재는 시연 모드입니다. 실제 승인은 GitHub PR 또는 인증된 백엔드에서만 기록합니다.</small></div>
+      </section>
+      <section class="bottom-grid">
+        <div class="panel" id="audit"><div class="panel-title"><div><h2>익명 라벨 ↔ 모델명 매핑</h2><p>AI에는 A/B/C만 보여주고, 관리자 감사 로그는 실제 모델 귀속을 보존합니다.</p></div><button class="text-button" id="mapping-toggle" type="button" aria-expanded="false">관리자 매핑 보기</button></div><div id="mapping-body" hidden></div></div>
+        <div class="panel kakao-panel"><div class="panel-title"><div><h2>카카오톡 보고 미리보기</h2><p>찬반 투표 대신 검증 결과와 미해결 쟁점을 보냅니다.</p></div><span class="small-tag">전송 미연결</span></div><div id="kakao-preview"></div></div>
+      </section>
+      <footer>AI PROJECT CENTER · 읽기 전용 시연 · API 호출 / GitHub 병합 / 카카오톡 전송 없음</footer>
+    </main>
+  </div>
+  <dialog id="info-dialog"><form method="dialog"><header><h2 id="dialog-title">상세 정보</h2><button class="icon-close" aria-label="닫기">×</button></header><div id="dialog-content"></div><button class="button secondary dialog-close">닫기</button></form></dialog>
+</body>
+</html>

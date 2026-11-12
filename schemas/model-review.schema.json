@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://edwardlim1004.github.io/AI-project-center-interface-main/schemas/model-review.schema.json",
+  "title": "AI Review Submission",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["review_id", "submission_id", "verdict", "claims", "counterexamples", "unverified_items", "tests_to_add"],
+  "properties": {
+    "review_id": {"type": "string", "minLength": 1, "maxLength": 80},
+    "submission_id": {"type": "string", "minLength": 1, "maxLength": 100},
+    "verdict": {"enum": ["support", "conditional", "oppose", "insufficient_evidence"]},
+    "claims": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "counterexamples": {"type": "array", "items": {"$ref": "#/$defs/objection"}},
+    "unverified_items": {"type": "array", "items": {"type": "string", "maxLength": 1000}},
+    "tests_to_add": {"type": "array", "items": {"type": "string", "maxLength": 1000}}
+  },
+  "$defs": {
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "statement", "evidence_refs", "severity", "confidence_band"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^C[0-9]{1,4}$"},
+        "statement": {"type": "string", "minLength": 1, "maxLength": 2000},
+        "evidence_refs": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z0-9][A-Z0-9._:-]{1,119}$"}},
+        "validation_test_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]{1,79}$"},
+        "validation_params": {"type": "object", "additionalProperties": true, "maxProperties": 20},
+        "severity": {"enum": ["critical", "major", "minor", "info"]},
+        "confidence_band": {"enum": ["low", "medium", "high"]}
+      }
+    },
+    "objection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target_claim_id", "finding", "severity", "evidence_refs"],
+      "properties": {
+        "target_claim_id": {"type": "string", "pattern": "^C[0-9]{1,4}$"},
+        "finding": {"type": "string", "minLength": 1, "maxLength": 2000},
+        "severity": {"enum": ["critical", "major", "minor", "info"]},
+        "evidence_refs": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z0-9][A-Z0-9._:-]{1,119}$"}}
+      }
+    }
+  }
+}
