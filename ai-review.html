@@ -36,6 +36,11 @@
         <div><span class="label">변경 대상</span><b id="change-target">—</b></div>
         <button class="button secondary" id="packet-button" type="button">패킷 구성 보기</button>
       </section>
+      <section class="decision-summary panel" id="decision-summary" aria-live="polite"></section>
+      <section class="panel event-panel" id="activity">
+        <div class="panel-title"><div><h2>검토 진행 기록</h2><p>각 단계에서 누가, 언제, 무엇을, 어떤 방법으로, 왜 했는지 확인합니다.</p></div><span class="small-tag">시각순 기록</span></div>
+        <div id="event-timeline" class="event-timeline"></div>
+      </section>
       <section class="steps" aria-label="검토 진행 단계" id="steps"></section>
       <section class="summary-grid" id="summary-cards"></section>
       <section class="review-switch panel">
@@ -48,9 +53,9 @@
       <section class="model-grid" id="model-grid"></section>
       <section class="content-grid" id="evidence">
         <div class="panel evidence-panel">
-          <div class="panel-title"><div><h2>주장별 근거 대조</h2><p>AI 응답을 주장 단위로 분리해 출처와 재현 결과를 비교합니다.</p></div><span class="small-tag">근거 원장</span></div>
-          <div class="table-scroll"><table><thead><tr><th>주장</th><th>근거 출처</th><th>ChatGPT</th><th>Claude</th><th>Gemini</th><th>Python 재현</th></tr></thead><tbody id="claims-body"></tbody></table></div>
-          <p class="table-foot">“재현”은 사전 허용된 검증 함수의 결과를 뜻합니다. AI가 반환한 임의 코드나 쿼리는 실행하지 않습니다.</p>
+          <div class="panel-title"><div><h2>주장별 검토 근거</h2><p>주장을 열면 세 AI의 의견, 근거 자료, 검증 방법과 남은 쟁점을 함께 봅니다.</p></div><span class="small-tag">주장 원장</span></div>
+          <div id="claim-cards" class="claim-cards"></div>
+          <p class="table-foot">검증 상태는 시연 예시입니다. 실제 운영에서는 허용된 검증 함수와 고정 데이터 스냅샷의 결과만 표시합니다.</p>
         </div>
         <aside class="panel gate-panel" id="decision">
           <div class="panel-title"><div><h2>Python 판정 게이트</h2><p>AI 표결과 분리된 규칙 기반 판정</p></div><span class="gate-icon">⌘</span></div>
