@@ -1,0 +1,186 @@
+{
+  "generated_at_utc": "2026-11-23T23:10:51.345544+00:00",
+  "series": "US Treasury 30 YR Par Yield",
+  "source": {
+    "name": "U.S. Treasury daily par yield curve (30 YR), 1990-present fallback",
+    "url": "https://fred.stlouisfed.org/series/DGS30",
+    "treasury_reference": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve",
+    "units": "Percent",
+    "frequency": "Daily",
+    "coverage_start": "1990-01-02",
+    "gap_note": "30-year constant maturity publication was discontinued after 2002-02-18 and reintroduced 2006-02-09. No interpolation is used."
+  },
+  "thresholds": [
+    5.4,
+    5.55,
+    5.7,
+    5.8
+  ],
+  "current": {
+    "date": "2026-11-23",
+    "yield": 5.29,
+    "previous_yield": 5.31,
+    "daily_change_bp": -2.0,
+    "regime": {
+      "code": "WATCH",
+      "label": "5.00–5.40% 대기구간",
+      "level": 0
+    },
+    "highest_threshold_crossed": null,
+    "next_threshold": 5.4,
+    "distance_to_next_bp": 11.0,
+    "below_5pct": false
+  },
+  "historical_position": {
+    "full_history_percentile": 64.2,
+    "post_2006_percentile": 99.2,
+    "last_20y_percentile": 99.1,
+    "full_history_min": 0.99,
+    "full_history_max": 9.18,
+    "recent_20d_min": 5.25,
+    "recent_20d_max": 5.47,
+    "recent_60d_min": 5.19,
+    "recent_60d_max": 5.67
+  },
+  "threshold_history": [
+    {
+      "threshold": 5.4,
+      "independent_upcrossings": 10,
+      "first_event": "1999-02-12",
+      "last_event": "2026-11-12",
+      "forward": {
+        "1m": {
+          "n": 8,
+          "mean_change_bp": -6.9,
+          "median_change_bp": -2.5,
+          "prob_yield_lower_pct": 50.0
+        },
+        "3m": {
+          "n": 6,
+          "mean_change_bp": 17.3,
+          "median_change_bp": 15.0,
+          "prob_yield_lower_pct": 16.7
+        },
+        "6m": {
+          "n": 4,
+          "mean_change_bp": 28.2,
+          "median_change_bp": 18.5,
+          "prob_yield_lower_pct": 0.0
+        },
+        "12m": {
+          "n": 2,
+          "mean_change_bp": 41.0,
+          "median_change_bp": 41.0,
+          "prob_yield_lower_pct": 0.0
+        }
+      }
+    },
+    {
+      "threshold": 5.55,
+      "independent_upcrossings": 10,
+      "first_event": "1999-02-25",
+      "last_event": "2026-09-28",
+      "forward": {
+        "1m": {
+          "n": 10,
+          "mean_change_bp": -5.7,
+          "median_change_bp": -7.5,
+          "prob_yield_lower_pct": 60.0
+        },
+        "3m": {
+          "n": 8,
+          "mean_change_bp": 6.9,
+          "median_change_bp": 6.0,
+          "prob_yield_lower_pct": 37.5
+        },
+        "6m": {
+          "n": 7,
+          "mean_change_bp": 20.1,
+          "median_change_bp": 10.0,
+          "prob_yield_lower_pct": 28.6
+        },
+        "12m": {
+          "n": 5,
+          "mean_change_bp": 22.4,
+          "median_change_bp": 25.0,
+          "prob_yield_lower_pct": 20.0
+        }
+      }
+    },
+    {
+      "threshold": 5.7,
+      "independent_upcrossings": 9,
+      "first_event": "1998-06-17",
+      "last_event": "2001-06-07",
+      "forward": {
+        "1m": {
+          "n": 9,
+          "mean_change_bp": 3.3,
+          "median_change_bp": 1.0,
+          "prob_yield_lower_pct": 44.4
+        },
+        "3m": {
+          "n": 9,
+          "mean_change_bp": -14.0,
+          "median_change_bp": -11.0,
+          "prob_yield_lower_pct": 66.7
+        },
+        "6m": {
+          "n": 9,
+          "mean_change_bp": -16.9,
+          "median_change_bp": -17.0,
+          "prob_yield_lower_pct": 55.6
+        },
+        "12m": {
+          "n": 7,
+          "mean_change_bp": -3.7,
+          "median_change_bp": -16.0,
+          "prob_yield_lower_pct": 57.1
+        }
+      }
+    },
+    {
+      "threshold": 5.8,
+      "independent_upcrossings": 10,
+      "first_event": "1993-10-18",
+      "last_event": "2001-04-27",
+      "forward": {
+        "1m": {
+          "n": 10,
+          "mean_change_bp": 6.5,
+          "median_change_bp": 8.5,
+          "prob_yield_lower_pct": 30.0
+        },
+        "3m": {
+          "n": 10,
+          "mean_change_bp": -9.2,
+          "median_change_bp": -17.5,
+          "prob_yield_lower_pct": 60.0
+        },
+        "6m": {
+          "n": 10,
+          "mean_change_bp": -15.6,
+          "median_change_bp": -17.0,
+          "prob_yield_lower_pct": 70.0
+        },
+        "12m": {
+          "n": 9,
+          "mean_change_bp": 0.6,
+          "median_change_bp": -25.0,
+          "prob_yield_lower_pct": 66.7
+        }
+      }
+    }
+  ],
+  "methodology": {
+    "event_definition": "An upcrossing occurs when the previous valid daily observation is below the threshold and the current observation is at/above it.",
+    "independence_rule": "Events within 20 trading days are de-duplicated.",
+    "forward_horizons_trading_days": {
+      "1m": 21,
+      "3m": 63,
+      "6m": 126,
+      "12m": 252
+    },
+    "interpretation": "Historical forward changes are descriptive, not a forecast. Negative bp means the 30Y yield was lower after the event, which is generally favorable to long-duration Treasury prices."
+  }
+}
