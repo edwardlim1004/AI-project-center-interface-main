@@ -1,0 +1,38 @@
+name: Refresh US30Y Investment AI data
+
+on:
+  schedule:
+    - cron: "30 23 * * 1-5"   # 08:30 KST Tue-Sat
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-us30y-investment-ai
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependency
+        run: pip install requests
+      - name: Refresh official US 30Y history and analytics
+        run: python scripts/update_us30y_history.py
+      - name: Commit refreshed public market data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/us30y_history.csv investment-ai/us30y-history/history.json investment-ai/us30y-history/summary.json
+          if git diff --cached --quiet; then
+            echo "No data changes"
+          else
+            git commit -m "data: refresh US30Y Investment AI dashboard"
+            git push
+          fi
