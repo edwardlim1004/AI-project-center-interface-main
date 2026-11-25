@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-24T07:00:39.333361+00:00",
+  "generated_at_utc": "2026-11-25T05:34:14.889038+00:00",
   "series": "US Treasury 30 YR Par Yield",
   "source": {
     "name": "U.S. Treasury daily par yield curve (30 YR), 1990-present fallback",
@@ -17,10 +17,10 @@
     5.8
   ],
   "current": {
-    "date": "2026-11-23",
-    "yield": 5.29,
-    "previous_yield": 5.31,
-    "daily_change_bp": -2.0,
+    "date": "2026-11-24",
+    "yield": 5.3,
+    "previous_yield": 5.29,
+    "daily_change_bp": 1.0,
     "regime": {
       "code": "WATCH",
       "label": "5.00–5.40% 대기구간",
@@ -28,18 +28,18 @@
     },
     "highest_threshold_crossed": null,
     "next_threshold": 5.4,
-    "distance_to_next_bp": 11.0,
+    "distance_to_next_bp": 10.0,
     "below_5pct": false
   },
   "historical_position": {
-    "full_history_percentile": 64.2,
+    "full_history_percentile": 64.3,
     "post_2006_percentile": 99.2,
-    "last_20y_percentile": 99.1,
+    "last_20y_percentile": 99.2,
     "full_history_min": 0.99,
     "full_history_max": 9.18,
     "recent_20d_min": 5.25,
     "recent_20d_max": 5.47,
-    "recent_60d_min": 5.19,
+    "recent_60d_min": 5.22,
     "recent_60d_max": 5.67
   },
   "threshold_history": [
